@@ -163,7 +163,7 @@ AppModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* HttpModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_3__core_core_module__["a" /* CoreModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_4__home_home_module__["a" /* HomeModule */],
             __WEBPACK_IMPORTED_MODULE_5__not_found_not_found_module__["a" /* NotFoundModule */],
@@ -275,7 +275,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "canvas {\r\n  /*background-color: lightgrey;\r\n  border: 1px solid black;*/\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n", ""]);
+exports.push([module.i, "canvas {\r\n  background-color: lightgrey;\r\n  border: 1px solid black;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n", ""]);
 
 // exports
 
@@ -298,8 +298,9 @@ module.exports = "<div>\r\n  <h1>Hello Angular Test!</h1>\r\n  <canvas id=\"canv
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomeComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_fabric__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_fabric__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -310,54 +311,63 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-// import * as fabric from 'fabric';
 
-// import 'fabric';
-// declare const fabric: any;
+
 var HomeComponent = (function () {
-    function HomeComponent() {
+    function HomeComponent(http) {
+        this.http = http;
+        //let options = { headers: { 'content-type': 'text/plain' } } as any;
+        //let body = { body: 'test' };
+        //http.post('api/values/parse', 'test', options).subscribe(result => {
+        //  debugger;
+        //  window.alert(result);
+        //}, error => console.error(error));
     }
     HomeComponent.prototype.ngOnInit = function () {
-        this.canvas = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].Canvas('canvas', {
-            width: 500,
-            height: 300
+        this.canvas = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Canvas('canvas', {
+            width: 800,
+            height: 500
         });
-        this.canvas.add(new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].Rect({
+        this.canvas.add(new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Rect({
             left: 100,
             top: 100,
             width: 50,
             height: 50,
             fill: '#faa'
         }));
-        this.canvas.add(new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].Circle({
+        this.canvas.add(new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Circle({
             left: 200,
             top: 100,
             radius: 25,
-            fill: '#afa'
+            fill: 'yellow'
         }));
-        this.canvas.add(new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].Triangle({
-            left: 300,
-            top: 100,
-            width: 50,
-            height: 150,
-            fill: '#aaf'
-        }));
-        var path = new __WEBPACK_IMPORTED_MODULE_1_fabric__["fabric"].Path('M 0 0 L 300 100 L 200 300 z');
-        path.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
-        this.canvas.add(path);
-        //  var pol = new fabric.Polygon([
-        //      { x: 200, y: 0 },
-        //      { x: 250, y: 50 },
-        //      { x: 250, y: 100 },
-        //      { x: 150, y: 100 },
-        //      { x: 150, y: 50 }], {
-        //      left: 10,
-        //      top: 10,
-        //      angle: 0,
-        //      fill: 'red', stroke: 'green', opacity: 0.5
-        //    }
-        //  );
-        //  this.canvas.add(pol);
+        //this.canvas.add(new fabric.Triangle({
+        //  left: 300,
+        //  top: 100,
+        //  width: 50,
+        //  height: 150,
+        //  fill: '#aaf'
+        //}));
+        //var path = new fabric.Path('M 0 0 L 300 100 L 200 300 z');
+        //path.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
+        //this.canvas.add(path);
+        // hexagon
+        var numberOfSides = 6, size = 200, Xcenter = 100, Ycenter = 100;
+        var xyCords = this.getPolygonCoordinates(numberOfSides, size, Xcenter, Ycenter);
+        var pol = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Polygon(xyCords, {
+            left: 10,
+            top: 10,
+            angle: 0,
+            fill: 'blue', stroke: 'green', opacity: 0.5
+        });
+        this.canvas.add(pol);
+    };
+    HomeComponent.prototype.getPolygonCoordinates = function (numberOfSides, size, xCenter, yCenter) {
+        var xyCords = [];
+        for (var i = 1; i <= numberOfSides; i += 1) {
+            xyCords.push({ x: xCenter + (size / 2) * Math.cos(i * 2 * Math.PI / numberOfSides), y: yCenter + (size / 2) * Math.sin(i * 2 * Math.PI / numberOfSides) });
+        }
+        return xyCords;
     };
     return HomeComponent;
 }());
@@ -367,9 +377,10 @@ HomeComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/home/home.component.html"),
         styles: [__webpack_require__("../../../../../src/app/home/home.component.css")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === "function" && _a || Object])
 ], HomeComponent);
 
+var _a;
 //# sourceMappingURL=home.component.js.map
 
 /***/ }),

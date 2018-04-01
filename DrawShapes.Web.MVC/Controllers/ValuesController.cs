@@ -1,11 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AngularAndDotnet.Controllers
+namespace DrawShapes.Web.MVC.Controllers
 {
   [Route("api/[controller]")]
   public class ValuesController : Controller
@@ -25,7 +22,7 @@ namespace AngularAndDotnet.Controllers
 
     [HttpPost("[action]")]
     // POST api/values
-    public string Post([FromBody]string value)
+    public string Parse(string value)
     {
       return $@"you posted ${value} at {DateTime.Now.ToLongTimeString()}";
     }
