@@ -301,6 +301,7 @@ module.exports = "<div>\r\n  <h1>Hello Angular Test!</h1>\r\n  <canvas id=\"canv
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_fabric__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shapes_model__ = __webpack_require__("../../../../../src/app/home/shapes.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -310,6 +311,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -328,26 +330,25 @@ var HomeComponent = (function () {
             width: 800,
             height: 500
         });
-        this.canvas.add(new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Rect({
-            left: 100,
-            top: 100,
-            width: 50,
-            height: 50,
-            fill: '#faa'
-        }));
-        this.canvas.add(new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Circle({
-            left: 200,
-            top: 100,
-            radius: 25,
-            fill: 'yellow'
-        }));
-        //this.canvas.add(new fabric.Triangle({
-        //  left: 300,
+        //this.canvas.add(new fabric.Rect({
+        //  left: 100,
         //  top: 100,
         //  width: 50,
-        //  height: 150,
-        //  fill: '#aaf'
+        //  height: 50,
+        //  fill: '#faa'
         //}));
+        //let radius = 50, left = 200, top = 100;
+        //let circle = new Shapes.Circle(radius, left, top);
+        //this.canvas.add(circle.getCircleObject());
+        var height = 150, width = 100, left = 200, top = 100;
+        var oval = new __WEBPACK_IMPORTED_MODULE_3__shapes_model__["a" /* Oval */](height, height, left, top);
+        this.canvas.add(oval.getDrawingObject());
+        //let triangle = new Shapes.Triangle(height, width, left, top);
+        //this.canvas.add(triangle.getDrawingObject());
+        //let rectangle = new Shapes.Rectangle(height, width, left, top);
+        //this.canvas.add(rectangle.getDrawingObject());
+        //let square = new Shapes.Rectangle(height, height, left, top);
+        //this.canvas.add(square.getDrawingObject());
         //var path = new fabric.Path('M 0 0 L 300 100 L 200 300 z');
         //path.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
         //this.canvas.add(path);
@@ -423,6 +424,96 @@ HomeModule = __decorate([
 ], HomeModule);
 
 //# sourceMappingURL=home.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/home/shapes.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export Shape */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Oval; });
+/* unused harmony export Triangle */
+/* unused harmony export Rectangle */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var Shape = (function () {
+    function Shape(height, width, left, top, fillColor) {
+        if (fillColor === void 0) { fillColor = 'blue'; }
+        this.height = height;
+        this.width = width;
+        this.left = left;
+        this.top = top;
+        this.fillColor = fillColor;
+    }
+    return Shape;
+}());
+
+//public fillColor: string = 'blue';
+Shape.OPACITY_CONST = 0.5;
+var Oval = (function (_super) {
+    __extends(Oval, _super);
+    function Oval() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Oval.prototype.getDrawingObject = function () {
+        return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Ellipse({
+            left: this.left,
+            top: this.top,
+            rx: this.width / 2,
+            ry: this.height / 2,
+            fill: this.fillColor, opacity: Shape.OPACITY_CONST
+        });
+    };
+    return Oval;
+}(Shape));
+
+var Triangle = (function (_super) {
+    __extends(Triangle, _super);
+    function Triangle() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Triangle.prototype.getDrawingObject = function () {
+        return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Triangle({
+            left: this.left,
+            top: this.top,
+            width: this.width,
+            height: this.height,
+            fill: this.fillColor, opacity: Shape.OPACITY_CONST
+        });
+    };
+    return Triangle;
+}(Shape));
+
+var Rectangle = (function (_super) {
+    __extends(Rectangle, _super);
+    function Rectangle() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Rectangle.prototype.getDrawingObject = function () {
+        return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Rect({
+            left: this.left,
+            top: this.top,
+            width: this.width,
+            height: this.height,
+            fill: this.fillColor, opacity: Shape.OPACITY_CONST
+        });
+    };
+    return Rectangle;
+}(Shape));
+
+//# sourceMappingURL=shapes.model.js.map
 
 /***/ }),
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import {fabric} from 'fabric';
+import * as Shapes from './shapes.model';
 
 @Component({
   selector: 'app-home',
@@ -27,28 +28,31 @@ export class HomeComponent implements OnInit {
       height: 500
     });
 
-    this.canvas.add(new fabric.Rect({
-      left: 100,
-      top: 100,
-      width: 50,
-      height: 50,
-      fill: '#faa'
-    }));
-
-    this.canvas.add(new fabric.Circle({
-      left: 200,
-      top: 100,
-      radius: 25,
-      fill: 'yellow'
-    }));
-
-    //this.canvas.add(new fabric.Triangle({
-    //  left: 300,
+    //this.canvas.add(new fabric.Rect({
+    //  left: 100,
     //  top: 100,
     //  width: 50,
-    //  height: 150,
-    //  fill: '#aaf'
+    //  height: 50,
+    //  fill: '#faa'
     //}));
+
+    //let radius = 50, left = 200, top = 100;
+    //let circle = new Shapes.Circle(radius, left, top);
+    //this.canvas.add(circle.getCircleObject());
+
+    let height = 150, width= 100, left = 200, top = 100;
+    let oval = new Shapes.Oval(height, height, left, top);
+    this.canvas.add(oval.getDrawingObject());
+
+
+    //let triangle = new Shapes.Triangle(height, width, left, top);
+    //this.canvas.add(triangle.getDrawingObject());
+
+    //let rectangle = new Shapes.Rectangle(height, width, left, top);
+    //this.canvas.add(rectangle.getDrawingObject());
+
+    //let square = new Shapes.Rectangle(height, height, left, top);
+    //this.canvas.add(square.getDrawingObject());
 
     //var path = new fabric.Path('M 0 0 L 300 100 L 200 300 z');
     //path.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
