@@ -90,7 +90,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<router-outlet></router-outlet>"
+module.exports = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a asp-area=\"\" asp-controller=\"Home\" asp-action=\"Index\" class=\"navbar-brand\">Draw Shapes using Natural Language</a>\r\n    </div>\r\n    <div class=\"navbar-collapse collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a [routerLink]=\"['home']\">Home</a></li>\r\n        <li><a [routerLink]=\"['help']\">Help</a></li>\r\n        <li><a [routerLink]=\"['contact']\">Contact</a></li>\r\n      </ul>\r\n    </div>\r\n  </div>\r\n</nav>\r\n\r\n<div class=\"container body-content\">\r\n  <router-outlet></router-outlet>\r\n\r\n  <hr />\r\n  <footer>\r\n    <p>&copy; 2018 - Draw Shapes using Natural Language</p>\r\n  </footer>\r\n</div>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -275,7 +275,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "canvas {\r\n  background-color: lightgrey;\r\n  border: 1px solid black;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n", ""]);
+exports.push([module.i, "canvas {\r\n  background-color: lightgrey;\r\n  border: 1px solid black;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.canvas-container, .home-screen {\r\n  padding-top: 20px;\r\n  width: 80%;\r\n  height: 90%;\r\n}\r\n\r\n.command-input {\r\n  width: 80%;\r\n}\r\n", ""]);
 
 // exports
 
@@ -288,7 +288,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n  <h1>Hello Angular Test!</h1>\r\n  <canvas id=\"canvas\"></canvas>\r\n</div>\r\n"
+module.exports = "<div class=\"home-screen\">\r\n\r\n  <label for=\"commandText\">Write Command to Draw Shape: </label>\r\n\r\n  <div id=\"input-container\">\r\n    <input id=\"commandText\" class=\"command-input\" type=\"text\" [(ngModel)]=\"model.command\" />\r\n    <button class=\"btn btn-sm btn-primary\" (click)=\"draw()\">\r\n      <i class=\"fa fa-paint-brush right-margin\"></i> Draw Shape\r\n    </button>\r\n  </div>\r\n\r\n  <div class=\"canvas-container\"><canvas id=\"canvas\"></canvas></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -301,7 +301,8 @@ module.exports = "<div>\r\n  <h1>Hello Angular Test!</h1>\r\n  <canvas id=\"canv
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_fabric__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shapes_model__ = __webpack_require__("../../../../../src/app/home/shapes.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_model__ = __webpack_require__("../../../../../src/app/home/home.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shapes_service__ = __webpack_require__("../../../../../src/app/home/shapes.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -315,21 +316,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var HomeComponent = (function () {
-    function HomeComponent(http) {
-        this.http = http;
+    function HomeComponent(http, shapesService) {
         //let options = { headers: { 'content-type': 'text/plain' } } as any;
         //let body = { body: 'test' };
-        //http.post('api/values/parse', 'test', options).subscribe(result => {
-        //  debugger;
-        //  window.alert(result);
+        //http.post('api/values/parse', 'my posted value', options).subscribe(result => {
+        //  //debugger;
+        //  console.log(result.json());
         //}, error => console.error(error));
+        var _this = this;
+        this.http = http;
+        this.shapesService = shapesService;
+        this.model = new __WEBPACK_IMPORTED_MODULE_3__home_model__["a" /* HomeModel */]();
+        shapesService.parsingCompletedObserver.subscribe(function (apiResponse) {
+            if (apiResponse != null) {
+                _this.canvas.add(apiResponse.getDrawingObject());
+            }
+        });
     }
     HomeComponent.prototype.ngOnInit = function () {
-        this.canvas = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Canvas('canvas', {
-            width: 800,
-            height: 500
-        });
+        this.canvas = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Canvas('canvas', {});
+        this.canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
         var height = 150, width = 100, left = 200, top = 100;
         //this.canvas.add(new fabric.Rect({
         //  left: 100,
@@ -368,8 +376,11 @@ var HomeComponent = (function () {
         //this.canvas.add(pol);
         //let polygon = new Shapes.Polygon(Shapes.PolygonTypesWithAngles.Pentagon, height, width, left, top);
         //this.canvas.add(polygon.getDrawingObject());
-        var parallelogram = new __WEBPACK_IMPORTED_MODULE_3__shapes_model__["a" /* Parallelogram */](height, width, left, top);
-        this.canvas.add(parallelogram.getDrawingObject());
+        //let parallelogram = new Shapes.Parallelogram(height, width, left, top);
+        //this.canvas.add(parallelogram.getDrawingObject());
+    };
+    HomeComponent.prototype.draw = function () {
+        this.shapesService.parse(this.model.command);
     };
     return HomeComponent;
 }());
@@ -379,11 +390,26 @@ HomeComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/home/home.component.html"),
         styles: [__webpack_require__("../../../../../src/app/home/home.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__shapes_service__["a" /* ShapesService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__shapes_service__["a" /* ShapesService */]) === "function" && _b || Object])
 ], HomeComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=home.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/home/home.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomeModel; });
+var HomeModel = (function () {
+    function HomeModel() {
+    }
+    return HomeModel;
+}());
+
+//# sourceMappingURL=home.model.js.map
 
 /***/ }),
 
@@ -396,12 +422,14 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_routing_module__ = __webpack_require__("../../../../../src/app/home/home-routing.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_component__ = __webpack_require__("../../../../../src/app/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shapes_service__ = __webpack_require__("../../../../../src/app/home/shapes.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -420,7 +448,7 @@ HomeModule = __decorate([
         declarations: [
             __WEBPACK_IMPORTED_MODULE_3__home_component__["a" /* HomeComponent */]
         ],
-        providers: []
+        providers: [__WEBPACK_IMPORTED_MODULE_4__shapes_service__["a" /* ShapesService */]]
     })
 ], HomeModule);
 
@@ -432,11 +460,11 @@ HomeModule = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export Shape */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Shape; });
 /* unused harmony export Oval */
 /* unused harmony export Triangle */
 /* unused harmony export Rectangle */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Parallelogram; });
+/* unused harmony export Parallelogram */
 /* unused harmony export Polygon */
 /* unused harmony export PolygonTypesWithAngles */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
@@ -460,7 +488,20 @@ var Shape = (function () {
         this.left = left;
         this.top = top;
         this.fillColor = fillColor;
+        this.shapeType = '';
     }
+    Shape.parseResponse = function (response) {
+        if (response.shapeType === 'circle' || response.shapeType === 'oval') {
+            return new Oval(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+        }
+        if (response.shapeType === 'square' || response.shapeType === 'rectangle') {
+            return new Rectangle(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+        }
+        if (response.shapeType === 'triangle') {
+            return new Triangle(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+        }
+        return new Polygon(response.numberOfAngles, response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+    };
     Shape.prototype.getPolygonCoordinates = function (numberOfAngles, height, width, xCenter, yCenter) {
         var xyCords = [];
         for (var i = 1; i <= numberOfAngles; i += 1) {
@@ -486,6 +527,8 @@ var Shape = (function () {
 
 Shape.DEFAULT_OPACITY_CONST = 0.5;
 Shape.DEFAULT_FILL_COLOR = 'blue';
+Shape.DEFAULT_TOP = 0.5;
+Shape.DEFAULT_LEFT = 0.5;
 var Oval = (function (_super) {
     __extends(Oval, _super);
     function Oval() {
@@ -600,6 +643,54 @@ PolygonTypesWithAngles.Hexagon = 6;
 PolygonTypesWithAngles.Heptagon = 7;
 PolygonTypesWithAngles.Octagon = 8;
 //# sourceMappingURL=shapes.model.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/home/shapes.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShapesService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shapes_model__ = __webpack_require__("../../../../../src/app/home/shapes.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ShapesService = (function () {
+    function ShapesService(http) {
+        this.http = http;
+        this.parsingCompletedObserver = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__["BehaviorSubject"](null);
+    }
+    ShapesService.prototype.parse = function (command) {
+        var _this = this;
+        var options = { headers: { 'content-type': 'text/plain' } };
+        this.http.post('api/ShapesParser/parse', command, options).subscribe(function (response) {
+            var result = __WEBPACK_IMPORTED_MODULE_2__shapes_model__["a" /* Shape */].parseResponse(response.json());
+            _this.parsingCompletedObserver.next(result);
+        }, function (error) { return console.error(error); });
+    };
+    return ShapesService;
+}());
+ShapesService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === "function" && _a || Object])
+], ShapesService);
+
+var _a;
+//# sourceMappingURL=shapes.service.js.map
 
 /***/ }),
 

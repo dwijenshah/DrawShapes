@@ -1,13 +1,33 @@
 import { fabric } from 'fabric';
 
-interface IShape {
+export interface IShape {
   getDrawingObject(): any;
 }
 export class Shape {
   public static readonly DEFAULT_OPACITY_CONST: number = 0.5;
   public static readonly DEFAULT_FILL_COLOR: string = 'blue';
+  public static readonly DEFAULT_TOP: number = 0.5;
+  public static readonly DEFAULT_LEFT: number = 0.5;
+
+  public shapeType: string = '';
 
   constructor(public height: number, public width: number, public left: number, public top: number, public fillColor: string = Shape.DEFAULT_FILL_COLOR) {
+  }
+
+  public static parseResponse(response: any): IShape {
+    if (response.shapeType === 'circle' || response.shapeType === 'oval') {
+      return new Oval(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+    }
+
+    if (response.shapeType === 'square' || response.shapeType === 'rectangle') {
+      return new Rectangle(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+    }
+
+    if (response.shapeType === 'triangle') {
+      return new Triangle(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+    }
+
+    return new Polygon(response.numberOfAngles, response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
   }
 
   protected getPolygonCoordinates(numberOfAngles: number, height: number, width: number, xCenter: number, yCenter: number): any {

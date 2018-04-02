@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import {fabric} from 'fabric';
 import * as Shapes from './shapes.model';
+import {HomeModel} from './home.model';
+import { ShapesService } from './shapes.service';
 
 @Component({
   selector: 'app-home',
@@ -9,24 +11,31 @@ import * as Shapes from './shapes.model';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  public model = new HomeModel();
   canvas: any;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private shapesService: ShapesService) {
     //let options = { headers: { 'content-type': 'text/plain' } } as any;
     //let body = { body: 'test' };
-    //http.post('api/values/parse', 'test', options).subscribe(result => {
-    //  debugger;
-    //  window.alert(result);
+    //http.post('api/values/parse', 'my posted value', options).subscribe(result => {
+    //  //debugger;
+    //  console.log(result.json());
     //}, error => console.error(error));
+
+    shapesService.parsingCompletedObserver.subscribe(apiResponse => {
+      if (apiResponse != null) {
+        this.canvas.add(apiResponse.getDrawingObject());
+      }
+    });
   }
 
   ngOnInit() {
 
     this.canvas = new fabric.Canvas('canvas', {
-      width: 800,
-      height: 500
+      //width: 800,
+      //height: 500
     });
+    this.canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
     let height = 150, width = 100, left = 200, top = 100;
 
     //this.canvas.add(new fabric.Rect({
@@ -79,17 +88,11 @@ export class HomeComponent implements OnInit {
     //let polygon = new Shapes.Polygon(Shapes.PolygonTypesWithAngles.Pentagon, height, width, left, top);
     //this.canvas.add(polygon.getDrawingObject());
 
-    let parallelogram = new Shapes.Parallelogram(height, width, left, top);
-    this.canvas.add(parallelogram.getDrawingObject());
+    //let parallelogram = new Shapes.Parallelogram(height, width, left, top);
+    //this.canvas.add(parallelogram.getDrawingObject());
   }
-  
-  //private getPolygonCoordinates(numberOfSides: number, size: number, xCenter: number, yCenter: number) : any {
-  //  let xyCords = [];
 
-  //  for (var i = 1; i <= numberOfSides; i += 1) {
-  //    xyCords.push({ x: xCenter + (size / 2) * Math.cos(i * 2 * Math.PI / numberOfSides), y: yCenter + (size / 2) * Math.sin(i * 2 * Math.PI / numberOfSides) });
-  //  }
-
-  //  return xyCords;
-  //}
+  public draw(): void {
+    this.shapesService.parse(this.model.command);
+  }
 }
