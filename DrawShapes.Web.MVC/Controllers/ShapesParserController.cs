@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Runtime.CompilerServices;
+using DrawShapes.Web.MVC.Models;
+using DrawShapes.Web.MVC.Services;
+using DrawShapes.Web.MVC.Services.Contracts;
 
 namespace DrawShapes.Web.MVC.Controllers
 {
@@ -7,10 +11,10 @@ namespace DrawShapes.Web.MVC.Controllers
   public class ShapesParserController : Controller
   {
     [HttpPost("[action]")]
-    // POST api/values
-    public string Parse([FromBody]string value)
+    public Response<ShapeAttributes> Parse([FromBody]string command)
     {
-      return $@"you posted {value} at {DateTime.Now.ToLongTimeString()}";
+      IShapesParsingService shapesParsingService = new ShapesParsingService();
+      return shapesParsingService.Parse(command);
     }
   }
 }

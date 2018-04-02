@@ -178,6 +178,22 @@ AppModule = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/core/core.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Response; });
+var Response = (function () {
+    function Response(data) {
+        this.data = data;
+    }
+    return Response;
+}());
+
+//# sourceMappingURL=core.model.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/core/core.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -288,7 +304,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"home-screen\">\r\n\r\n  <label for=\"commandText\">Write Command to Draw Shape: </label>\r\n\r\n  <div id=\"input-container\">\r\n    <input id=\"commandText\" class=\"command-input\" type=\"text\" [(ngModel)]=\"model.command\" />\r\n    <button class=\"btn btn-sm btn-primary\" (click)=\"draw()\">\r\n      <i class=\"fa fa-paint-brush right-margin\"></i> Draw Shape\r\n    </button>\r\n  </div>\r\n\r\n  <div class=\"canvas-container\"><canvas id=\"canvas\"></canvas></div>\r\n</div>\r\n"
+module.exports = "<div class=\"home-screen\">\r\n  <div class=\"alert alert-danger\" *ngIf=\"errorMessages != null && errorMessages.length > 0\">\r\n    <span>Validation Messages:</span>\r\n    <ul>\r\n      <li *ngFor=\"let message of errorMessages\">\r\n        {{message}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <label for=\"commandText\">Write Command to Draw Shape: </label>\r\n\r\n  <div id=\"input-container\">\r\n    <input id=\"commandText\" class=\"command-input\" type=\"text\" [(ngModel)]=\"model.command\" />\r\n    <button class=\"btn btn-sm btn-primary\" (click)=\"draw()\">\r\n      <i class=\"fa fa-paint-brush right-margin\"></i> Draw Shape\r\n    </button>\r\n  </div>\r\n\r\n  <div class=\"canvas-container\"><canvas id=\"canvas\"></canvas></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -319,68 +335,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var HomeComponent = (function () {
     function HomeComponent(http, shapesService) {
-        //let options = { headers: { 'content-type': 'text/plain' } } as any;
-        //let body = { body: 'test' };
-        //http.post('api/values/parse', 'my posted value', options).subscribe(result => {
-        //  //debugger;
-        //  console.log(result.json());
-        //}, error => console.error(error));
-        var _this = this;
         this.http = http;
         this.shapesService = shapesService;
         this.model = new __WEBPACK_IMPORTED_MODULE_3__home_model__["a" /* HomeModel */]();
-        shapesService.parsingCompletedObserver.subscribe(function (apiResponse) {
-            if (apiResponse != null) {
-                _this.canvas.add(apiResponse.getDrawingObject());
-            }
-        });
+        this.canvasContainer = null;
+        this.errorMessages = null;
+        this.subscribeForParserResponse();
     }
     HomeComponent.prototype.ngOnInit = function () {
-        this.canvas = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Canvas('canvas', {});
-        this.canvas.setDimensions({ width: '100%', height: '100%' }, { cssOnly: true });
-        var height = 150, width = 100, left = 200, top = 100;
-        //this.canvas.add(new fabric.Rect({
-        //  left: 100,
-        //  top: 100,
-        //  width: 50,
-        //  height: 50,
-        //  fill: '#faa'
-        //}));
-        //let radius = 50, left = 200, top = 100;
-        //let circle = new Shapes.Circle(radius, left, top);
-        //this.canvas.add(circle.getCircleObject());
-        //let oval = new Shapes.Oval(height, height, left, top);
-        //this.canvas.add(oval.getDrawingObject());
-        //let triangle = new Shapes.Triangle(height, height, left, top);
-        //this.canvas.add(triangle.getDrawingObject());
-        //let rectangle = new Shapes.Rectangle(height, width, left, top);
-        //this.canvas.add(rectangle.getDrawingObject());
-        //let square = new Shapes.Rectangle(height, height, left, top);
-        //this.canvas.add(square.getDrawingObject());
-        //var path = new fabric.Path('M 0 0 L 300 100 L 200 300 z');
-        //path.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
-        //this.canvas.add(path);
-        // hexagon
-        //var numberOfSides = 7,
-        //  size = 200,
-        //  Xcenter = 100,
-        //  Ycenter = 100;
-        //let xyCords = this.getPolygonCoordinates(numberOfSides, size, Xcenter, Ycenter);
-        //var pol = new fabric.Polygon(xyCords, {
-        //    left: 10,
-        //    top: 10,
-        //    angle: 0,
-        //    fill: 'blue', stroke: 'green', opacity: 0.5
-        //  }
-        //);
-        //this.canvas.add(pol);
-        //let polygon = new Shapes.Polygon(Shapes.PolygonTypesWithAngles.Pentagon, height, width, left, top);
-        //this.canvas.add(polygon.getDrawingObject());
-        //let parallelogram = new Shapes.Parallelogram(height, width, left, top);
-        //this.canvas.add(parallelogram.getDrawingObject());
+        this.canvasContainer = document.getElementsByClassName('canvas-container')[0];
+        this.canvas = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Canvas('canvas', {
+            width: this.canvasContainer.clientWidth,
+            height: this.canvasContainer.clientHeight
+        });
     };
     HomeComponent.prototype.draw = function () {
+        this.errorMessages = null;
         this.shapesService.parse(this.model.command);
+    };
+    HomeComponent.prototype.subscribeForParserResponse = function () {
+        var _this = this;
+        this.shapesService.parsingCompletedObserver.subscribe(function (response) {
+            if (response != null) {
+                if (response.errorMessages != null && response.errorMessages.length > 0) {
+                    _this.errorMessages = response.errorMessages;
+                }
+                else {
+                    var shape = response.data;
+                    shape.top = (_this.canvasContainer.clientHeight / 2) - (shape.height / 2);
+                    shape.left = (_this.canvasContainer.clientWidth / 2) - (shape.width / 2);
+                    _this.canvas.clear();
+                    _this.canvas.add(shape.getDrawingObject());
+                }
+            }
+        });
     };
     return HomeComponent;
 }());
@@ -467,6 +455,7 @@ HomeModule = __decorate([
 /* unused harmony export Parallelogram */
 /* unused harmony export Polygon */
 /* unused harmony export PolygonTypesWithAngles */
+/* unused harmony export ShapeAttributes */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
 var __extends = (this && this.__extends) || (function () {
@@ -642,6 +631,12 @@ PolygonTypesWithAngles.Pentagon = 5;
 PolygonTypesWithAngles.Hexagon = 6;
 PolygonTypesWithAngles.Heptagon = 7;
 PolygonTypesWithAngles.Octagon = 8;
+var ShapeAttributes = (function () {
+    function ShapeAttributes() {
+    }
+    return ShapeAttributes;
+}());
+
 //# sourceMappingURL=shapes.model.js.map
 
 /***/ }),
@@ -656,6 +651,7 @@ PolygonTypesWithAngles.Octagon = 8;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shapes_model__ = __webpack_require__("../../../../../src/app/home/shapes.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_core_model__ = __webpack_require__("../../../../../src/app/core/core.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -669,6 +665,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ShapesService = (function () {
     function ShapesService(http) {
         this.http = http;
@@ -678,8 +675,14 @@ var ShapesService = (function () {
         var _this = this;
         var options = { headers: { 'content-type': 'text/plain' } };
         this.http.post('api/ShapesParser/parse', command, options).subscribe(function (response) {
-            var result = __WEBPACK_IMPORTED_MODULE_2__shapes_model__["a" /* Shape */].parseResponse(response.json());
-            _this.parsingCompletedObserver.next(result);
+            var responseObj = response.json();
+            if (responseObj.errorMessages == null || responseObj.errorMessages.length === 0) {
+                var result = __WEBPACK_IMPORTED_MODULE_2__shapes_model__["a" /* Shape */].parseResponse(responseObj.data);
+                _this.parsingCompletedObserver.next(new __WEBPACK_IMPORTED_MODULE_4__core_core_model__["a" /* Response */](result));
+            }
+            else {
+                _this.parsingCompletedObserver.next(responseObj);
+            }
         }, function (error) { return console.error(error); });
     };
     return ShapesService;

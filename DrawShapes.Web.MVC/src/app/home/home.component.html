@@ -1,5 +1,12 @@
 <div class="home-screen">
-
+  <div class="alert alert-danger" *ngIf="errorMessages != null && errorMessages.length > 0">
+    <span>Validation Messages:</span>
+    <ul>
+      <li *ngFor="let message of errorMessages">
+        {{message}}
+      </li>
+    </ul>
+  </div>
   <label for="commandText">Write Command to Draw Shape: </label>
 
   <div id="input-container">

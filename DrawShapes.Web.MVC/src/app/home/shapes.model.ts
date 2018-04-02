@@ -2,6 +2,10 @@ import { fabric } from 'fabric';
 
 export interface IShape {
   getDrawingObject(): any;
+  height: number;
+  width: number;
+  top: number;
+  left: number;
 }
 export class Shape {
   public static readonly DEFAULT_OPACITY_CONST: number = 0.5;
@@ -147,4 +151,11 @@ export class PolygonTypesWithAngles {
   public static readonly Hexagon = 6;
   public static readonly Heptagon = 7;
   public static readonly Octagon = 8;
+}
+
+export class ShapeAttributes {
+  public shapeType: string;
+  public height: number;
+  public width: number;
+  public numberOfAngles: number;
 }
