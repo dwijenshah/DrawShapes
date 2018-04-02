@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
       width: 800,
       height: 500
     });
+    let height = 150, width = 100, left = 200, top = 100;
 
     //this.canvas.add(new fabric.Rect({
     //  left: 100,
@@ -40,12 +41,12 @@ export class HomeComponent implements OnInit {
     //let circle = new Shapes.Circle(radius, left, top);
     //this.canvas.add(circle.getCircleObject());
 
-    let height = 150, width= 100, left = 200, top = 100;
-    let oval = new Shapes.Oval(height, height, left, top);
-    this.canvas.add(oval.getDrawingObject());
+    
+    //let oval = new Shapes.Oval(height, height, left, top);
+    //this.canvas.add(oval.getDrawingObject());
 
 
-    //let triangle = new Shapes.Triangle(height, width, left, top);
+    //let triangle = new Shapes.Triangle(height, height, left, top);
     //this.canvas.add(triangle.getDrawingObject());
 
     //let rectangle = new Shapes.Rectangle(height, width, left, top);
@@ -59,32 +60,36 @@ export class HomeComponent implements OnInit {
     //this.canvas.add(path);
 
     // hexagon
-    var numberOfSides = 6,
-      size = 200,
-      Xcenter = 100,
-      Ycenter = 100;
+    //var numberOfSides = 7,
+    //  size = 200,
+    //  Xcenter = 100,
+    //  Ycenter = 100;
 
 
-    let xyCords = this.getPolygonCoordinates(numberOfSides, size, Xcenter, Ycenter);
-    var pol = new fabric.Polygon(xyCords, {
-        left: 10,
-        top: 10,
-        angle: 0,
-        fill: 'blue', stroke: 'green', opacity: 0.5
-      }
-    );
-    this.canvas.add(pol);
+    //let xyCords = this.getPolygonCoordinates(numberOfSides, size, Xcenter, Ycenter);
+    //var pol = new fabric.Polygon(xyCords, {
+    //    left: 10,
+    //    top: 10,
+    //    angle: 0,
+    //    fill: 'blue', stroke: 'green', opacity: 0.5
+    //  }
+    //);
+    //this.canvas.add(pol);
 
+    //let polygon = new Shapes.Polygon(Shapes.PolygonTypesWithAngles.Pentagon, height, width, left, top);
+    //this.canvas.add(polygon.getDrawingObject());
 
+    let parallelogram = new Shapes.Parallelogram(height, width, left, top);
+    this.canvas.add(parallelogram.getDrawingObject());
   }
   
-  private getPolygonCoordinates(numberOfSides: number, size: number, xCenter: number, yCenter: number) : any {
-    let xyCords = [];
+  //private getPolygonCoordinates(numberOfSides: number, size: number, xCenter: number, yCenter: number) : any {
+  //  let xyCords = [];
 
-    for (var i = 1; i <= numberOfSides; i += 1) {
-      xyCords.push({ x: xCenter + (size / 2) * Math.cos(i * 2 * Math.PI / numberOfSides), y: yCenter + (size / 2) * Math.sin(i * 2 * Math.PI / numberOfSides) });
-    }
+  //  for (var i = 1; i <= numberOfSides; i += 1) {
+  //    xyCords.push({ x: xCenter + (size / 2) * Math.cos(i * 2 * Math.PI / numberOfSides), y: yCenter + (size / 2) * Math.sin(i * 2 * Math.PI / numberOfSides) });
+  //  }
 
-    return xyCords;
-  }
+  //  return xyCords;
+  //}
 }

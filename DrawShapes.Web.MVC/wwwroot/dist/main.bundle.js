@@ -330,6 +330,7 @@ var HomeComponent = (function () {
             width: 800,
             height: 500
         });
+        var height = 150, width = 100, left = 200, top = 100;
         //this.canvas.add(new fabric.Rect({
         //  left: 100,
         //  top: 100,
@@ -340,10 +341,9 @@ var HomeComponent = (function () {
         //let radius = 50, left = 200, top = 100;
         //let circle = new Shapes.Circle(radius, left, top);
         //this.canvas.add(circle.getCircleObject());
-        var height = 150, width = 100, left = 200, top = 100;
-        var oval = new __WEBPACK_IMPORTED_MODULE_3__shapes_model__["a" /* Oval */](height, height, left, top);
-        this.canvas.add(oval.getDrawingObject());
-        //let triangle = new Shapes.Triangle(height, width, left, top);
+        //let oval = new Shapes.Oval(height, height, left, top);
+        //this.canvas.add(oval.getDrawingObject());
+        //let triangle = new Shapes.Triangle(height, height, left, top);
         //this.canvas.add(triangle.getDrawingObject());
         //let rectangle = new Shapes.Rectangle(height, width, left, top);
         //this.canvas.add(rectangle.getDrawingObject());
@@ -353,22 +353,23 @@ var HomeComponent = (function () {
         //path.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
         //this.canvas.add(path);
         // hexagon
-        var numberOfSides = 6, size = 200, Xcenter = 100, Ycenter = 100;
-        var xyCords = this.getPolygonCoordinates(numberOfSides, size, Xcenter, Ycenter);
-        var pol = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Polygon(xyCords, {
-            left: 10,
-            top: 10,
-            angle: 0,
-            fill: 'blue', stroke: 'green', opacity: 0.5
-        });
-        this.canvas.add(pol);
-    };
-    HomeComponent.prototype.getPolygonCoordinates = function (numberOfSides, size, xCenter, yCenter) {
-        var xyCords = [];
-        for (var i = 1; i <= numberOfSides; i += 1) {
-            xyCords.push({ x: xCenter + (size / 2) * Math.cos(i * 2 * Math.PI / numberOfSides), y: yCenter + (size / 2) * Math.sin(i * 2 * Math.PI / numberOfSides) });
-        }
-        return xyCords;
+        //var numberOfSides = 7,
+        //  size = 200,
+        //  Xcenter = 100,
+        //  Ycenter = 100;
+        //let xyCords = this.getPolygonCoordinates(numberOfSides, size, Xcenter, Ycenter);
+        //var pol = new fabric.Polygon(xyCords, {
+        //    left: 10,
+        //    top: 10,
+        //    angle: 0,
+        //    fill: 'blue', stroke: 'green', opacity: 0.5
+        //  }
+        //);
+        //this.canvas.add(pol);
+        //let polygon = new Shapes.Polygon(Shapes.PolygonTypesWithAngles.Pentagon, height, width, left, top);
+        //this.canvas.add(polygon.getDrawingObject());
+        var parallelogram = new __WEBPACK_IMPORTED_MODULE_3__shapes_model__["a" /* Parallelogram */](height, width, left, top);
+        this.canvas.add(parallelogram.getDrawingObject());
     };
     return HomeComponent;
 }());
@@ -432,9 +433,12 @@ HomeModule = __decorate([
 
 "use strict";
 /* unused harmony export Shape */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Oval; });
+/* unused harmony export Oval */
 /* unused harmony export Triangle */
 /* unused harmony export Rectangle */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Parallelogram; });
+/* unused harmony export Polygon */
+/* unused harmony export PolygonTypesWithAngles */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
 var __extends = (this && this.__extends) || (function () {
@@ -450,18 +454,38 @@ var __extends = (this && this.__extends) || (function () {
 
 var Shape = (function () {
     function Shape(height, width, left, top, fillColor) {
-        if (fillColor === void 0) { fillColor = 'blue'; }
+        if (fillColor === void 0) { fillColor = Shape.DEFAULT_FILL_COLOR; }
         this.height = height;
         this.width = width;
         this.left = left;
         this.top = top;
         this.fillColor = fillColor;
     }
+    Shape.prototype.getPolygonCoordinates = function (numberOfAngles, height, width, xCenter, yCenter) {
+        var xyCords = [];
+        for (var i = 1; i <= numberOfAngles; i += 1) {
+            xyCords.push({
+                x: xCenter + (width / 2) * Math.cos(i * 2 * Math.PI / numberOfAngles),
+                y: yCenter + (height / 2) * Math.sin(i * 2 * Math.PI / numberOfAngles)
+            });
+        }
+        return xyCords;
+    };
+    Shape.prototype.getPolygonCoordinatesBySideLength = function (numberOfAngles, side, xCenter, yCenter) {
+        var xyCords = [];
+        for (var i = 1; i <= numberOfAngles; i += 1) {
+            xyCords.push({
+                x: xCenter + (side) * Math.cos(i * 2 * Math.PI / numberOfAngles),
+                y: yCenter + (side) * Math.sin(i * 2 * Math.PI / numberOfAngles)
+            });
+        }
+        return xyCords;
+    };
     return Shape;
 }());
 
-//public fillColor: string = 'blue';
-Shape.OPACITY_CONST = 0.5;
+Shape.DEFAULT_OPACITY_CONST = 0.5;
+Shape.DEFAULT_FILL_COLOR = 'blue';
 var Oval = (function (_super) {
     __extends(Oval, _super);
     function Oval() {
@@ -473,7 +497,7 @@ var Oval = (function (_super) {
             top: this.top,
             rx: this.width / 2,
             ry: this.height / 2,
-            fill: this.fillColor, opacity: Shape.OPACITY_CONST
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
         });
     };
     return Oval;
@@ -490,7 +514,7 @@ var Triangle = (function (_super) {
             top: this.top,
             width: this.width,
             height: this.height,
-            fill: this.fillColor, opacity: Shape.OPACITY_CONST
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
         });
     };
     return Triangle;
@@ -507,12 +531,74 @@ var Rectangle = (function (_super) {
             top: this.top,
             width: this.width,
             height: this.height,
-            fill: this.fillColor, opacity: Shape.OPACITY_CONST
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
         });
     };
     return Rectangle;
 }(Shape));
 
+var Parallelogram = (function (_super) {
+    __extends(Parallelogram, _super);
+    function Parallelogram(height, width, left, top, fillColor) {
+        if (fillColor === void 0) { fillColor = Shape.DEFAULT_FILL_COLOR; }
+        return _super.call(this, height, width, left, top, fillColor) || this;
+    }
+    Parallelogram.prototype.getDrawingObject = function (side) {
+        if (side === void 0) { side = null; }
+        //let shapeLeftPos = 0, shapeTopPos = 0;
+        var xyCords = [
+            { x: this.left, y: this.top },
+            { x: this.left + this.width, y: this.top },
+            { x: this.left + this.width - (this.width * 0.2), y: this.top + this.height },
+            { x: this.left - (this.width * 0.2), y: this.top + this.height }
+        ];
+        return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Polygon(xyCords, {
+            left: 10,
+            top: 10,
+            angle: 0,
+            fill: this.fillColor, opacity: 0.5
+        });
+    };
+    return Parallelogram;
+}(Shape));
+
+var Polygon = (function (_super) {
+    __extends(Polygon, _super);
+    function Polygon(numberOfAngles, height, width, left, top, fillColor) {
+        if (fillColor === void 0) { fillColor = Shape.DEFAULT_FILL_COLOR; }
+        var _this = _super.call(this, height, width, left, top, fillColor) || this;
+        _this.numberOfAngles = numberOfAngles;
+        return _this;
+    }
+    Polygon.prototype.getDrawingObject = function (side) {
+        if (side === void 0) { side = null; }
+        var xyCords = [];
+        if (side != null) {
+            xyCords = this.getPolygonCoordinatesBySideLength(this.numberOfAngles, side, this.left + this.width / 2, this.top + this.height / 2);
+        }
+        else {
+            xyCords = this.getPolygonCoordinates(this.numberOfAngles, this.height, this.width, this.left + this.width / 2, this.top + this.height / 2);
+        }
+        return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Polygon(xyCords, {
+            left: this.left,
+            top: this.top,
+            angle: 0,
+            fill: this.fillColor, opacity: 0.5
+        });
+    };
+    return Polygon;
+}(Shape));
+
+var PolygonTypesWithAngles = (function () {
+    function PolygonTypesWithAngles() {
+    }
+    return PolygonTypesWithAngles;
+}());
+
+PolygonTypesWithAngles.Pentagon = 5;
+PolygonTypesWithAngles.Hexagon = 6;
+PolygonTypesWithAngles.Heptagon = 7;
+PolygonTypesWithAngles.Octagon = 8;
 //# sourceMappingURL=shapes.model.js.map
 
 /***/ }),
