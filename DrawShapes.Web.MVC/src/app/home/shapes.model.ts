@@ -10,15 +10,15 @@ export interface IShape {
 export class Shape {
   public static readonly DEFAULT_OPACITY_CONST: number = 0.5;
   public static readonly DEFAULT_FILL_COLOR: string = 'blue';
-  public static readonly DEFAULT_TOP: number = 0.5;
-  public static readonly DEFAULT_LEFT: number = 0.5;
+  public static readonly DEFAULT_TOP: number = 10;
+  public static readonly DEFAULT_LEFT: number = 10;
 
   public shapeType: string = '';
 
   constructor(public height: number, public width: number, public left: number, public top: number, public fillColor: string = Shape.DEFAULT_FILL_COLOR) {
   }
 
-  public static parseResponse(response: any): IShape {
+  public static parseResponse(response: ShapeAttributes): IShape {
     if (response.shapeType === 'circle' || response.shapeType === 'oval') {
       return new Oval(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
     }
@@ -31,7 +31,11 @@ export class Shape {
       return new Triangle(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
     }
 
-    return new Polygon(response.numberOfAngles, response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+    if (response.shapeType === 'parallelogram') {
+      return new Parallelogram(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+    }
+
+    return new Polygon(response.numberOfAngles, response.height, response.width, response.side, this.DEFAULT_LEFT, this.DEFAULT_TOP);
   }
 
   protected getPolygonCoordinates(numberOfAngles: number, height: number, width: number, xCenter: number, yCenter: number): any {
@@ -113,8 +117,8 @@ export class Parallelogram extends Shape implements IShape {
     ];
 
     return new fabric.Polygon(xyCords, {
-      left: 10,
-      top: 10,
+      left: this.left,
+      top: this.top,
       angle: 0,
       fill: this.fillColor, opacity: 0.5
     });
@@ -122,15 +126,15 @@ export class Parallelogram extends Shape implements IShape {
 }
 
 export class Polygon extends Shape implements IShape {
-  constructor(public numberOfAngles: number, height: number, width: number, left: number, top: number, fillColor: string = Shape.DEFAULT_FILL_COLOR) {
+  constructor(public numberOfAngles: number, height: number, width: number, private side:number, left: number, top: number, fillColor: string = Shape.DEFAULT_FILL_COLOR) {
     super(height, width, left, top, fillColor);
   }
 
-  public getDrawingObject(side: number = null): any {
+  public getDrawingObject(): any {
     let xyCords = [];
 
-    if (side != null) {
-      xyCords = this.getPolygonCoordinatesBySideLength(this.numberOfAngles, side,
+    if (this.side != null) {
+      xyCords = this.getPolygonCoordinatesBySideLength(this.numberOfAngles, this.side,
                                                       this.left + this.width / 2, this.top + this.height / 2);
     } else {
       xyCords = this.getPolygonCoordinates(this.numberOfAngles, this.height, this.width
@@ -138,8 +142,8 @@ export class Polygon extends Shape implements IShape {
     }
 
     return new fabric.Polygon(xyCords, {
-      left: this.left,
-      top: this.top,
+      left: this.left / 2,
+      top: this.top / 2,
       angle: 0,
       fill: this.fillColor, opacity: 0.5
     });
@@ -157,5 +161,6 @@ export class ShapeAttributes {
   public shapeType: string;
   public height: number;
   public width: number;
+  public side: number;
   public numberOfAngles: number;
 }

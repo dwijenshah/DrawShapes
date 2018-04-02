@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
     this.shapesService.parsingCompletedObserver.subscribe(response => {
       if (response != null) {
         if (response.errorMessages != null && response.errorMessages.length > 0) {
+          this.canvas.clear();
           this.errorMessages = response.errorMessages;
         } else {
           let shape = response.data;

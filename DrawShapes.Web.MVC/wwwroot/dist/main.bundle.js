@@ -358,6 +358,7 @@ var HomeComponent = (function () {
         this.shapesService.parsingCompletedObserver.subscribe(function (response) {
             if (response != null) {
                 if (response.errorMessages != null && response.errorMessages.length > 0) {
+                    _this.canvas.clear();
                     _this.errorMessages = response.errorMessages;
                 }
                 else {
@@ -489,7 +490,10 @@ var Shape = (function () {
         if (response.shapeType === 'triangle') {
             return new Triangle(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
         }
-        return new Polygon(response.numberOfAngles, response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+        if (response.shapeType === 'parallelogram') {
+            return new Parallelogram(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
+        }
+        return new Polygon(response.numberOfAngles, response.height, response.width, response.side, this.DEFAULT_LEFT, this.DEFAULT_TOP);
     };
     Shape.prototype.getPolygonCoordinates = function (numberOfAngles, height, width, xCenter, yCenter) {
         var xyCords = [];
@@ -516,8 +520,8 @@ var Shape = (function () {
 
 Shape.DEFAULT_OPACITY_CONST = 0.5;
 Shape.DEFAULT_FILL_COLOR = 'blue';
-Shape.DEFAULT_TOP = 0.5;
-Shape.DEFAULT_LEFT = 0.5;
+Shape.DEFAULT_TOP = 10;
+Shape.DEFAULT_LEFT = 10;
 var Oval = (function (_super) {
     __extends(Oval, _super);
     function Oval() {
@@ -585,8 +589,8 @@ var Parallelogram = (function (_super) {
             { x: this.left - (this.width * 0.2), y: this.top + this.height }
         ];
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Polygon(xyCords, {
-            left: 10,
-            top: 10,
+            left: this.left,
+            top: this.top,
             angle: 0,
             fill: this.fillColor, opacity: 0.5
         });
@@ -596,24 +600,24 @@ var Parallelogram = (function (_super) {
 
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
-    function Polygon(numberOfAngles, height, width, left, top, fillColor) {
+    function Polygon(numberOfAngles, height, width, side, left, top, fillColor) {
         if (fillColor === void 0) { fillColor = Shape.DEFAULT_FILL_COLOR; }
         var _this = _super.call(this, height, width, left, top, fillColor) || this;
         _this.numberOfAngles = numberOfAngles;
+        _this.side = side;
         return _this;
     }
-    Polygon.prototype.getDrawingObject = function (side) {
-        if (side === void 0) { side = null; }
+    Polygon.prototype.getDrawingObject = function () {
         var xyCords = [];
-        if (side != null) {
-            xyCords = this.getPolygonCoordinatesBySideLength(this.numberOfAngles, side, this.left + this.width / 2, this.top + this.height / 2);
+        if (this.side != null) {
+            xyCords = this.getPolygonCoordinatesBySideLength(this.numberOfAngles, this.side, this.left + this.width / 2, this.top + this.height / 2);
         }
         else {
             xyCords = this.getPolygonCoordinates(this.numberOfAngles, this.height, this.width, this.left + this.width / 2, this.top + this.height / 2);
         }
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Polygon(xyCords, {
-            left: this.left,
-            top: this.top,
+            left: this.left / 2,
+            top: this.top / 2,
             angle: 0,
             fill: this.fillColor, opacity: 0.5
         });
