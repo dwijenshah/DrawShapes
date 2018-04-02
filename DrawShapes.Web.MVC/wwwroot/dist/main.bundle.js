@@ -291,7 +291,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "canvas {\r\n  background-color: lightgrey;\r\n  border: 1px solid black;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.canvas-container, .home-screen {\r\n  padding-top: 20px;\r\n  width: 80%;\r\n  height: 90%;\r\n}\r\n\r\n.command-input {\r\n  width: 80%;\r\n}\r\n", ""]);
+exports.push([module.i, "canvas {\r\n  background-color: lightgrey;\r\n  border: 1px solid black;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.canvas-host, .home-screen {\r\n  padding-top: 10px;\r\n  width: 100%;\r\n  height: 90%;\r\n}\r\n\r\n.command-input {\r\n  width: 80%;\r\n  margin-bottom: 10px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -304,7 +304,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"home-screen\">\r\n  <div class=\"alert alert-danger\" *ngIf=\"errorMessages != null && errorMessages.length > 0\">\r\n    <span>Validation Messages:</span>\r\n    <ul>\r\n      <li *ngFor=\"let message of errorMessages\">\r\n        {{message}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <label for=\"commandText\">Write Command to Draw Shape: </label>\r\n\r\n  <div id=\"input-container\">\r\n    <input id=\"commandText\" class=\"command-input\" type=\"text\" [(ngModel)]=\"model.command\" />\r\n    <button class=\"btn btn-sm btn-primary\" (click)=\"draw()\">\r\n      <i class=\"fa fa-paint-brush right-margin\"></i> Draw Shape\r\n    </button>\r\n  </div>\r\n\r\n  <div class=\"canvas-container\"><canvas id=\"canvas\"></canvas></div>\r\n</div>\r\n"
+module.exports = "<div class=\"home-screen\">\r\n  <div class=\"alert alert-danger\" *ngIf=\"errorMessages != null && errorMessages.length > 0\">\r\n    <span>Validation Messages:</span>\r\n    <ul>\r\n      <li *ngFor=\"let message of errorMessages\">\r\n        {{message}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <label for=\"commandText\">Write Command to Draw Shape: </label>\r\n\r\n  <div id=\"input-container\">\r\n    <input id=\"commandText\" class=\"command-input\" type=\"text\" [(ngModel)]=\"model.command\"/>\r\n    <button class=\"btn btn-sm btn-primary\" (click)=\"draw()\">\r\n      <i class=\"fa fa-paint-brush right-margin\"></i> Draw Shape\r\n    </button>\r\n  </div>\r\n\r\n  <div class=\"canvas-host\"><canvas id=\"canvas\"></canvas></div>\r\n</div>\r\n<div class=\"loading\" *ngIf=\"isProcessing\">Loading.......</div>\r\n"
 
 /***/ }),
 
@@ -340,22 +340,32 @@ var HomeComponent = (function () {
         this.model = new __WEBPACK_IMPORTED_MODULE_3__home_model__["a" /* HomeModel */]();
         this.canvasContainer = null;
         this.errorMessages = null;
+        this.isProcessing = false;
         this.subscribeForParserResponse();
     }
     HomeComponent.prototype.ngOnInit = function () {
-        this.canvasContainer = document.getElementsByClassName('canvas-container')[0];
+        this.canvasContainer = document.getElementsByClassName('canvas-host')[0];
         this.canvas = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Canvas('canvas', {
             width: this.canvasContainer.clientWidth,
             height: this.canvasContainer.clientHeight
         });
     };
+    HomeComponent.prototype.onResize = function ($event) {
+        this.canvasContainer = document.getElementsByClassName('canvas-host')[0];
+        if (this.canvasContainer) {
+            this.canvas.width = this.canvasContainer.clientWidth,
+                this.canvas.height = this.canvasContainer.clientHeight;
+        }
+    };
     HomeComponent.prototype.draw = function () {
         this.errorMessages = null;
+        this.isProcessing = true;
         this.shapesService.parse(this.model.command);
     };
     HomeComponent.prototype.subscribeForParserResponse = function () {
         var _this = this;
         this.shapesService.parsingCompletedObserver.subscribe(function (response) {
+            _this.isProcessing = false;
             if (response != null) {
                 if (response.errorMessages != null && response.errorMessages.length > 0) {
                     _this.canvas.clear();
@@ -616,8 +626,8 @@ var Polygon = (function (_super) {
             xyCords = this.getPolygonCoordinates(this.numberOfAngles, this.height, this.width, this.left + this.width / 2, this.top + this.height / 2);
         }
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Polygon(xyCords, {
-            left: this.left / 2,
-            top: this.top / 2,
+            left: 10,
+            top: 10,
             angle: 0,
             fill: this.fillColor, opacity: 0.5
         });

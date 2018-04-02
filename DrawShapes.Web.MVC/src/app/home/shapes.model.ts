@@ -142,8 +142,8 @@ export class Polygon extends Shape implements IShape {
     }
 
     return new fabric.Polygon(xyCords, {
-      left: this.left / 2,
-      top: this.top / 2,
+      left: 10,
+      top: 10,
       angle: 0,
       fill: this.fillColor, opacity: 0.5
     });

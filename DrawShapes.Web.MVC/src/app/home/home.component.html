@@ -10,11 +10,12 @@
   <label for="commandText">Write Command to Draw Shape: </label>
 
   <div id="input-container">
-    <input id="commandText" class="command-input" type="text" [(ngModel)]="model.command" />
+    <input id="commandText" class="command-input" type="text" [(ngModel)]="model.command"/>
     <button class="btn btn-sm btn-primary" (click)="draw()">
       <i class="fa fa-paint-brush right-margin"></i> Draw Shape
     </button>
   </div>
 
-  <div class="canvas-container"><canvas id="canvas"></canvas></div>
+  <div class="canvas-host"><canvas id="canvas"></canvas></div>
 </div>
+<div class="loading" *ngIf="isProcessing">Loading.......</div>

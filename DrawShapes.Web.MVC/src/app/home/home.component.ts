@@ -15,13 +15,14 @@ export class HomeComponent implements OnInit {
   canvas: any;
   private canvasContainer: Element = null;
   private errorMessages: string[] = null;
+  public isProcessing: boolean = false;
 
   constructor(private http: Http, private shapesService: ShapesService) {
     this.subscribeForParserResponse();
   }
 
   ngOnInit() {
-    this.canvasContainer = document.getElementsByClassName('canvas-container')[0];
+    this.canvasContainer = document.getElementsByClassName('canvas-host')[0];
 
     this.canvas = new fabric.Canvas('canvas', {
       width: this.canvasContainer.clientWidth,
@@ -29,13 +30,25 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  public onResize($event) {
+    this.canvasContainer = document.getElementsByClassName('canvas-host')[0];
+
+    if (this.canvasContainer) {
+      this.canvas.width = this.canvasContainer.clientWidth,
+      this.canvas.height = this.canvasContainer.clientHeight;
+    }
+  }
+
   public draw(): void {
     this.errorMessages = null;
+    this.isProcessing = true;
     this.shapesService.parse(this.model.command);
   }
 
   private subscribeForParserResponse() {
     this.shapesService.parsingCompletedObserver.subscribe(response => {
+      this.isProcessing = false;
+
       if (response != null) {
         if (response.errorMessages != null && response.errorMessages.length > 0) {
           this.canvas.clear();
