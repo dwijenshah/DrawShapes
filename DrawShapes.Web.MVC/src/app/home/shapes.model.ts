@@ -8,8 +8,9 @@ export interface IShape {
   left: number;
 }
 export class Shape {
-  public static readonly DEFAULT_OPACITY_CONST: number = 0.5;
+  public static readonly DEFAULT_OPACITY_CONST: number = 1;
   public static readonly DEFAULT_FILL_COLOR: string = 'blue';
+  public static readonly DEFAULT_BORDER_COLOR: string = 'black';
   public static readonly DEFAULT_TOP: number = 10;
   public static readonly DEFAULT_LEFT: number = 10;
 
@@ -72,7 +73,7 @@ export class Oval extends Shape implements IShape {
       top: this.top,
       rx: this.width / 2,
       ry: this.height / 2,
-      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
+      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
     });
   }
 }
@@ -85,7 +86,7 @@ export class Triangle extends Shape implements IShape {
       top: this.top,
       width: this.width,
       height: this.height,
-      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
+      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
     });
   }
 }
@@ -97,7 +98,7 @@ export class Rectangle extends Shape implements IShape {
       top: this.top,
       width: this.width,
       height: this.height,
-      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
+      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
     });
   }
 }
@@ -108,7 +109,6 @@ export class Parallelogram extends Shape implements IShape {
   }
 
   public getDrawingObject(side: number = null): any {
-    //let shapeLeftPos = 0, shapeTopPos = 0;
     let xyCords = [
       { x: this.left, y: this.top },
       { x: this.left + this.width, y: this.top },
@@ -120,7 +120,7 @@ export class Parallelogram extends Shape implements IShape {
       left: this.left,
       top: this.top,
       angle: 0,
-      fill: this.fillColor, opacity: 0.5
+      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
     });
   }
 }
@@ -145,7 +145,7 @@ export class Polygon extends Shape implements IShape {
       left: 10,
       top: 10,
       angle: 0,
-      fill: this.fillColor, opacity: 0.5
+      fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
     });
   }
 }

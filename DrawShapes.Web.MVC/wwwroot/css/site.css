@@ -21,6 +21,14 @@ html, body, .body-content {
 .right-margin {
   margin-right: 5px;
 }
+
+.with-canvas-bg {
+  background-image: url("../images/canvas_bg.png");
+  -ms-background-repeat: repeat;
+  background-repeat: repeat;
+  border: 1px solid black;
+}
+
 /* Absolute Center Spinner */
 .loading {
   position: fixed;

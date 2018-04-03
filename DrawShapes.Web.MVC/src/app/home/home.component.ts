@@ -49,15 +49,17 @@ export class HomeComponent implements OnInit {
     this.shapesService.parsingCompletedObserver.subscribe(response => {
       this.isProcessing = false;
 
-      if (response != null) {
+      if (response != null && this.canvas != null && this.canvasContainer != null) {
         if (response.errorMessages != null && response.errorMessages.length > 0) {
           this.canvas.clear();
           this.errorMessages = response.errorMessages;
         } else {
           let shape = response.data;
 
-          shape.top = (this.canvasContainer.clientHeight / 2) - (shape.height / 2);
-          shape.left = (this.canvasContainer.clientWidth / 2) - (shape.width / 2);
+          if (this.canvasContainer != null) {
+            shape.top = (this.canvasContainer.clientHeight / 2) - (shape.height / 2);
+            shape.left = (this.canvasContainer.clientWidth / 2) - (shape.width / 2);
+          }
 
           this.canvas.clear();
           this.canvas.add(shape.getDrawingObject());

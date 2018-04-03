@@ -25,6 +25,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_gendir lazy recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__not_found_not_found_component__ = __webpack_require__("../../../../../src/app/not-found/not-found.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__help_help_component__ = __webpack_require__("../../../../../src/app/help/help.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -34,11 +35,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
     {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
+    },
+    {
+        path: 'help',
+        component: __WEBPACK_IMPORTED_MODULE_3__help_help_component__["a" /* HelpComponent */]
     },
     {
         path: '404',
@@ -90,7 +96,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a asp-area=\"\" asp-controller=\"Home\" asp-action=\"Index\" class=\"navbar-brand\">Draw Shapes Application</a>\r\n    </div>\r\n    <div class=\"navbar-collapse collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a [routerLink]=\"['home']\">Home</a></li>\r\n        <li><a onclick=\"window.alert('not implemented yet');\" href=\"#\">Help</a></li>\r\n        <li><a onclick=\"window.alert('not implemented yet');\" href=\"#\">Contact Dwijen</a></li>\r\n      </ul>\r\n    </div>\r\n  </div>\r\n</nav>\r\n\r\n<div class=\"container body-content\">\r\n  <router-outlet></router-outlet>\r\n\r\n  <hr />\r\n  <footer>\r\n    <p>&copy; 2018 - Draw Shapes using Natural Language - Dwijen Shah</p>\r\n  </footer>\r\n</div>\r\n\r\n\r\n"
+module.exports = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a [routerLink]=\"['home']\" class=\"navbar-brand\">Draw Shapes Application</a>\r\n    </div>\r\n    <div class=\"navbar-collapse collapse\">\r\n      <ul class=\"nav navbar-nav\" onclick=\"$('.navbar-collapse').collapse('hide');\">\r\n        <li><a [routerLink]=\"['home']\"><i class=\"fa fa-home right-margin\"></i>Home</a></li>\r\n        <li><a [routerLink]=\"['help']\"><i class=\"fa fa-question-circle right-margin\"></i>Help</a></li>\r\n        <li><a href=\"mailto:dwijen.shah@gmail.com?Subject=Draw%20Shapes%20Application\"><i class=\"fa fa-envelope right-margin\"></i>Contact Dwijen</a></li>\r\n      </ul>\r\n    </div>\r\n  </div>\r\n</nav>\r\n\r\n<div class=\"container body-content\">\r\n  <router-outlet></router-outlet>\r\n\r\n  <hr />\r\n  <footer>\r\n    <p>&copy; 2018 - Draw Shapes using Natural Language - Dwijen Shah</p>\r\n  </footer>\r\n</div>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -135,14 +141,16 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_core_module__ = __webpack_require__("../../../../../src/app/core/core.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home_module__ = __webpack_require__("../../../../../src/app/home/home.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__not_found_not_found_module__ = __webpack_require__("../../../../../src/app/not-found/not-found.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__help_help_module__ = __webpack_require__("../../../../../src/app/help/help.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -159,7 +167,7 @@ var AppModule = (function () {
 AppModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModule */])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -167,10 +175,11 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_3__core_core_module__["a" /* CoreModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_4__home_home_module__["a" /* HomeModule */],
             __WEBPACK_IMPORTED_MODULE_5__not_found_not_found_module__["a" /* NotFoundModule */],
-            __WEBPACK_IMPORTED_MODULE_6__app_routing_module__["a" /* AppRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_6__help_help_module__["a" /* HelpModule */],
+            __WEBPACK_IMPORTED_MODULE_7__app_routing_module__["a" /* AppRoutingModule */],
         ],
         providers: [],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]]
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
@@ -243,6 +252,105 @@ var CoreModule_1;
 
 /***/ }),
 
+/***/ "../../../../../src/app/help/help.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/help/help.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h2>How To <i class=\"fa fa-question-circle\"></i> </h2>\r\n<p>\r\n  Please enter a natural language command to draw the shape. Example: Draw a(n) [shape] with a(n) [measurement] of [amount] (and a(n) [measurement] of\r\n  [amount]). Please also see examples below on how to draw a specific shape.\r\n</p>\r\n\r\n<section>\r\n  <h3>How to Draw a Circle <i class=\"fa fa-question-circle\"></i> </h3>\r\n  <p>\r\n    You can draw a circle with either mentioning radius, height or width.\r\n    When you specify height or width, it draws the circle with half the radius of that height or width value.\r\n  </p>\r\n  <p class=\"examples\">\r\n    Examples: <br />\r\n    Draw a circle with a radius of 100. <br />\r\n    Draw a circle with a height of 100. <br />\r\n    Draw a circle with a width of 100. <br />\r\n  </p>\r\n</section>\r\n\r\n<section>\r\n  <h3>How to Draw an Oval <i class=\"fa fa-question-circle\"></i></h3>\r\n  <p>\r\n    You can draw an oval with mentioning both height and width, since oval has different height and width value.\r\n  </p>\r\n  <p class=\"examples\">\r\n    Examples: <br />\r\n    Draw an oval with a height of 100 and a width of 200. <br />\r\n  </p>\r\n</section>\r\n\r\n<section>\r\n  <h3>How to Draw a Triangle <i class=\"fa fa-question-circle\"></i></h3>\r\n  <p>\r\n    You can draw a triangle with mentioning either height or width or both height and width.\r\n    When you mention both height and width (different values), it draws an isosceles triangle.\r\n    When you mention just height or width, it draws a regular triangle with same sides.\r\n  </p>\r\n  <p class=\"examples\">\r\n    Examples: <br />\r\n    Draw a triangle with height of 100. <br />\r\n    Draw a triangle with width of 200. <br />\r\n    Draw a triangle with width of 200 and height of 100. <br />\r\n  </p>\r\n</section>\r\n\r\n\r\n<section>\r\n  <h3>How to Draw a Square <i class=\"fa fa-question-circle\"></i></h3>\r\n  <p>\r\n    You can draw a square with either mentioning height or width, because a square has same height and width.\r\n  </p>\r\n  <p class=\"examples\">\r\n    Examples: <br />\r\n    Draw a square with a height of 100. <br />\r\n    Draw a square with a width of 100. <br />\r\n  </p>\r\n</section>\r\n\r\n\r\n<section>\r\n  <h3>How to Draw a Rectangle or Parallelogram <i class=\"fa fa-question-circle\"></i></h3>\r\n  <p>\r\n    You can draw a rectangle or parallelogram with mentioning both height and width which also differ in value,\r\n    since both rectangle and parallelogram have different height and width dimensions.\r\n  </p>\r\n  <p class=\"examples\">\r\n    Examples: <br />\r\n    Draw a rectangle with a height of 100 and a width of 200. <br />\r\n    Draw a parallelogram with a height of 150 and a width of 250. <br />\r\n  </p>\r\n</section>\r\n\r\n\r\n<section>\r\n  <h3>How to Draw a Pentagon or Hexagon or Heptagon or Octagon <i class=\"fa fa-question-circle\"></i></h3>\r\n  <p>\r\n    You can draw a pentagon or hexagon or heptagon or octagon by mentioning the length of its sides.\r\n  </p>\r\n  <p class=\"examples\">\r\n    Examples: <br />\r\n    Draw a pentagon with a side of 200. <br />\r\n    Draw a hexagon with a side of 150. <br />\r\n    Draw a heptagon with a side of 120. <br />\r\n    Draw an octagon with a side of 100. <br />\r\n  </p>\r\n</section>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/help/help.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelpComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var HelpComponent = (function () {
+    function HelpComponent() {
+    }
+    HelpComponent.prototype.ngOnInit = function () {
+    };
+    return HelpComponent;
+}());
+HelpComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-help',
+        template: __webpack_require__("../../../../../src/app/help/help.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/help/help.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], HelpComponent);
+
+//# sourceMappingURL=help.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/help/help.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelpModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__help_component__ = __webpack_require__("../../../../../src/app/help/help.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var HelpModule = (function () {
+    function HelpModule() {
+    }
+    return HelpModule;
+}());
+HelpModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_2__shared_shared_module__["a" /* SharedModule */]
+        ],
+        declarations: [
+            __WEBPACK_IMPORTED_MODULE_1__help_component__["a" /* HelpComponent */]
+        ],
+        providers: []
+    })
+], HelpModule);
+
+//# sourceMappingURL=help.module.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/home/home-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -291,7 +399,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "canvas {\r\n  background-color: lightgrey;\r\n  border: 1px solid black;\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.canvas-host, .home-screen {\r\n  padding-top: 10px;\r\n  width: 100%;\r\n  height: 90%;\r\n}\r\n\r\n.command-input {\r\n  width: 80%;\r\n  margin-bottom: 10px;\r\n}\r\n", ""]);
+exports.push([module.i, "canvas {\r\n  /*background-color: lightgrey;\r\n  border: 1px solid black;*/\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.canvas-host, .home-screen {\r\n  width: 100%;\r\n  height: 90%;\r\n}\r\n.home-screen {\r\n  padding-top: 10px;\r\n}\r\n.command-input {\r\n  width: 80%;\r\n  margin-bottom: 10px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -304,7 +412,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"home-screen\">\r\n  <div class=\"alert alert-danger\" *ngIf=\"errorMessages != null && errorMessages.length > 0\">\r\n    <span>Validation Messages:</span>\r\n    <ul>\r\n      <li *ngFor=\"let message of errorMessages\">\r\n        {{message}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <label for=\"commandText\">Write Command to Draw Shape: </label>\r\n\r\n  <div id=\"input-container\">\r\n    <input id=\"commandText\" class=\"command-input\" type=\"text\" [(ngModel)]=\"model.command\"/>\r\n    <button class=\"btn btn-sm btn-primary\" (click)=\"draw()\">\r\n      <i class=\"fa fa-paint-brush right-margin\"></i> Draw Shape\r\n    </button>\r\n  </div>\r\n\r\n  <div class=\"canvas-host\"><canvas id=\"canvas\"></canvas></div>\r\n</div>\r\n<div class=\"loading\" *ngIf=\"isProcessing\">Loading.......</div>\r\n"
+module.exports = "<div class=\"home-screen\">\r\n  <div class=\"alert alert-danger\" *ngIf=\"errorMessages != null && errorMessages.length > 0\">\r\n    <span>Validation Messages:</span>\r\n    <ul>\r\n      <li *ngFor=\"let message of errorMessages\">\r\n        {{message}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <label for=\"commandText\">Write Command to Draw Shape: </label>\r\n\r\n  <div id=\"input-container\">\r\n    <input id=\"commandText\" class=\"command-input\" type=\"text\" [(ngModel)]=\"model.command\"/>\r\n    <button class=\"btn btn-sm btn-primary\" (click)=\"draw()\">\r\n      <i class=\"fa fa-paint-brush right-margin\"></i> Draw Shape\r\n    </button>\r\n  </div>\r\n\r\n  <div class=\"canvas-host with-canvas-bg\"><canvas id=\"canvas\"></canvas></div>\r\n</div>\r\n<div class=\"loading\" *ngIf=\"isProcessing\">Loading.......</div>\r\n"
 
 /***/ }),
 
@@ -366,15 +474,17 @@ var HomeComponent = (function () {
         var _this = this;
         this.shapesService.parsingCompletedObserver.subscribe(function (response) {
             _this.isProcessing = false;
-            if (response != null) {
+            if (response != null && _this.canvas != null && _this.canvasContainer != null) {
                 if (response.errorMessages != null && response.errorMessages.length > 0) {
                     _this.canvas.clear();
                     _this.errorMessages = response.errorMessages;
                 }
                 else {
                     var shape = response.data;
-                    shape.top = (_this.canvasContainer.clientHeight / 2) - (shape.height / 2);
-                    shape.left = (_this.canvasContainer.clientWidth / 2) - (shape.width / 2);
+                    if (_this.canvasContainer != null) {
+                        shape.top = (_this.canvasContainer.clientHeight / 2) - (shape.height / 2);
+                        shape.left = (_this.canvasContainer.clientWidth / 2) - (shape.width / 2);
+                    }
                     _this.canvas.clear();
                     _this.canvas.add(shape.getDrawingObject());
                 }
@@ -528,8 +638,9 @@ var Shape = (function () {
     return Shape;
 }());
 
-Shape.DEFAULT_OPACITY_CONST = 0.5;
+Shape.DEFAULT_OPACITY_CONST = 1;
 Shape.DEFAULT_FILL_COLOR = 'blue';
+Shape.DEFAULT_BORDER_COLOR = 'black';
 Shape.DEFAULT_TOP = 10;
 Shape.DEFAULT_LEFT = 10;
 var Oval = (function (_super) {
@@ -543,7 +654,7 @@ var Oval = (function (_super) {
             top: this.top,
             rx: this.width / 2,
             ry: this.height / 2,
-            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
         });
     };
     return Oval;
@@ -560,7 +671,7 @@ var Triangle = (function (_super) {
             top: this.top,
             width: this.width,
             height: this.height,
-            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
         });
     };
     return Triangle;
@@ -577,7 +688,7 @@ var Rectangle = (function (_super) {
             top: this.top,
             width: this.width,
             height: this.height,
-            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
         });
     };
     return Rectangle;
@@ -591,7 +702,6 @@ var Parallelogram = (function (_super) {
     }
     Parallelogram.prototype.getDrawingObject = function (side) {
         if (side === void 0) { side = null; }
-        //let shapeLeftPos = 0, shapeTopPos = 0;
         var xyCords = [
             { x: this.left, y: this.top },
             { x: this.left + this.width, y: this.top },
@@ -602,7 +712,7 @@ var Parallelogram = (function (_super) {
             left: this.left,
             top: this.top,
             angle: 0,
-            fill: this.fillColor, opacity: 0.5
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
         });
     };
     return Parallelogram;
@@ -629,7 +739,7 @@ var Polygon = (function (_super) {
             left: 10,
             top: 10,
             angle: 0,
-            fill: this.fillColor, opacity: 0.5
+            fill: this.fillColor, opacity: Shape.DEFAULT_OPACITY_CONST, stroke: Shape.DEFAULT_BORDER_COLOR, strokeWidth: 3, strokeDashArray: [10, 10],
         });
     };
     return Polygon;
@@ -732,7 +842,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/not-found/not-found.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  Page not found\n</p>"
+module.exports = "<div class=\"page-not-found-image\">\n  <img src=\"images/404.gif\" />\n</div>\n\n"
 
 /***/ }),
 

@@ -41,6 +41,11 @@ namespace DrawShapes.Web.MVC
         routes.MapRoute(
                   name: "default",
                   template: "{controller=Home}/{action=Index}/{id?}");
+        routes.MapRoute(
+          "NotFound",
+          "{*url}",
+          new { controller = "Home", action = "Index" } //redirect to home page and let Angular handle further routing.
+        );
       });
     }
   }

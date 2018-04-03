@@ -7,13 +7,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Draw Shapes Application</a>
+      <a [routerLink]="['home']" class="navbar-brand">Draw Shapes Application</a>
     </div>
     <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a [routerLink]="['home']">Home</a></li>
-        <li><a onclick="window.alert('not implemented yet');" href="#">Help</a></li>
-        <li><a onclick="window.alert('not implemented yet');" href="#">Contact Dwijen</a></li>
+      <ul class="nav navbar-nav" onclick="$('.navbar-collapse').collapse('hide');">
+        <li><a [routerLink]="['home']"><i class="fa fa-home right-margin"></i>Home</a></li>
+        <li><a [routerLink]="['help']"><i class="fa fa-question-circle right-margin"></i>Help</a></li>
+        <li><a href="mailto:dwijen.shah@gmail.com?Subject=Draw%20Shapes%20Application"><i class="fa fa-envelope right-margin"></i>Contact Dwijen</a></li>
       </ul>
     </div>
   </div>
