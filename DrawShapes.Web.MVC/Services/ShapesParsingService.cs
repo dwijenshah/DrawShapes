@@ -19,7 +19,7 @@ namespace DrawShapes.Web.MVC.Services
       Octagon = 8
     }
 
-    private enum SupportedShapesEnum
+    public enum SupportedShapesEnum
     {
       Triangle,
       Rectangle,
@@ -165,6 +165,11 @@ namespace DrawShapes.Web.MVC.Services
 
       if (radius > 0)
       {
+        if (shapeType == SupportedShapesEnum.Oval.ToString())
+        {
+          return new Response<ShapeAttributes>(null, new string[] { "Oval should have different height and width specified, radius can only be specified for circle." });
+        }
+
         parsedHeight = radius.Value * 2;  //calculate height = radius * 2
         parsedWidth = radius.Value * 2;  //calculate width = radius * 2
       }
@@ -221,6 +226,12 @@ namespace DrawShapes.Web.MVC.Services
       if ((height == 0 || height == null) && (width == 0 || width == null))
       {
         return new Response<ShapeAttributes>(null, new string[] { $"Please specify height/width for the {shapeType.ToLower()}." });
+      }
+
+      if (shapeType == SupportedShapesEnum.Parallelogram.ToString())
+      {
+        if (height > 0 && (width == 0 || width == null)) width = height;
+        if ((height == 0 || height == null) && width > 0) height = width;
       }
 
       if (height > 0)
