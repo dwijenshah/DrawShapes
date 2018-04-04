@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HelpComponent } from './help/help.component';
 
+//Following routing table defines routes for all high level screens.
 const routes: Routes = [
   {
     path: '',

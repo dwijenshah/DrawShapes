@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "hello-angular-fabric"
+    "name": "draw-shapes"
   },
   "apps": [
     {
@@ -11,16 +11,12 @@
         "assets",
         "favicon.ico"
       ],
-      "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-      "styles": [
-        "styles.css"
-      ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {

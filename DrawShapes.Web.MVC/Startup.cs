@@ -41,7 +41,7 @@ namespace DrawShapes.Web.MVC
         routes.MapRoute(
                   name: "default",
                   template: "{controller=Home}/{action=Index}/{id?}");
-        routes.MapRoute(
+        routes.MapRoute(  //catch-all route for MVC for client-side handling of further routing.
           "NotFound",
           "{*url}",
           new { controller = "Home", action = "Index" } //redirect to home page and let Angular handle further routing.

@@ -36,6 +36,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+//Following routing table defines routes for all high level screens.
 var routes = [
     {
         path: '',
@@ -399,7 +400,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "canvas {\r\n  /*background-color: lightgrey;\r\n  border: 1px solid black;*/\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.canvas-host, .home-screen {\r\n  width: 100%;\r\n  height: 90%;\r\n}\r\n.home-screen {\r\n  padding-top: 10px;\r\n}\r\n.command-input {\r\n  width: 80%;\r\n  margin-bottom: 10px;\r\n}\r\n", ""]);
+exports.push([module.i, "canvas {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n.canvas-host, .home-screen {\r\n  width: 100%;\r\n  height: 90%;\r\n}\r\n.home-screen {\r\n  padding-top: 10px;\r\n}\r\n.command-input {\r\n  width: 80%;\r\n  margin-bottom: 10px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -438,6 +439,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+//Fabric library is used to draw the shape, as its a flexible library for drawing shapes and also gives ability to end users to select shape objects and resize/rotate it.
 
 
 
@@ -451,6 +453,7 @@ var HomeComponent = (function () {
         this.isProcessing = false;
         this.subscribeForParserResponse();
     }
+    //Component initialization code.
     HomeComponent.prototype.ngOnInit = function () {
         this.canvasContainer = document.getElementsByClassName('canvas-host')[0];
         this.canvas = new __WEBPACK_IMPORTED_MODULE_2_fabric__["fabric"].Canvas('canvas', {
@@ -458,35 +461,32 @@ var HomeComponent = (function () {
             height: this.canvasContainer.clientHeight
         });
     };
-    HomeComponent.prototype.onResize = function ($event) {
-        this.canvasContainer = document.getElementsByClassName('canvas-host')[0];
-        if (this.canvasContainer) {
-            this.canvas.width = this.canvasContainer.clientWidth,
-                this.canvas.height = this.canvasContainer.clientHeight;
-        }
-    };
+    //Following method calls the shapes service to send the command to server to parse into a shape.
     HomeComponent.prototype.draw = function () {
         this.errorMessages = null;
         this.isProcessing = true;
         this.shapesService.parse(this.model.command);
     };
+    //This method subscribes to shapes parsing service's response from server and once returned , it draws the shape on the canvas.
     HomeComponent.prototype.subscribeForParserResponse = function () {
         var _this = this;
         this.shapesService.parsingCompletedObserver.subscribe(function (response) {
             _this.isProcessing = false;
             if (response != null && _this.canvas != null && _this.canvasContainer != null) {
                 if (response.errorMessages != null && response.errorMessages.length > 0) {
+                    //if errors found in response.
                     _this.canvas.clear();
                     _this.errorMessages = response.errorMessages;
                 }
                 else {
+                    //if no errors found in response.
                     var shape = response.data;
                     if (_this.canvasContainer != null) {
                         shape.top = (_this.canvasContainer.clientHeight / 2) - (shape.height / 2);
                         shape.left = (_this.canvasContainer.clientWidth / 2) - (shape.width / 2);
                     }
                     _this.canvas.clear();
-                    _this.canvas.add(shape.getDrawingObject());
+                    _this.canvas.add(shape.getDrawingObject()); //this draws the fabric shape on the canvas.
                 }
             }
         });
@@ -575,7 +575,6 @@ HomeModule = __decorate([
 /* unused harmony export Rectangle */
 /* unused harmony export Parallelogram */
 /* unused harmony export Polygon */
-/* unused harmony export PolygonTypesWithAngles */
 /* unused harmony export ShapeAttributes */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__("../../../../fabric/dist/fabric.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
@@ -590,6 +589,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 
+//Shape object defines all common properties and methods for all shape objects.
 var Shape = (function () {
     function Shape(height, width, left, top, fillColor) {
         if (fillColor === void 0) { fillColor = Shape.DEFAULT_FILL_COLOR; }
@@ -600,6 +600,7 @@ var Shape = (function () {
         this.fillColor = fillColor;
         this.shapeType = '';
     }
+    //This method parses response and creates the Shape which can draw a Fabric Shape.
     Shape.parseResponse = function (response) {
         if (response.shapeType === 'circle' || response.shapeType === 'oval') {
             return new Oval(response.height, response.width, this.DEFAULT_LEFT, this.DEFAULT_TOP);
@@ -615,6 +616,7 @@ var Shape = (function () {
         }
         return new Polygon(response.numberOfAngles, response.height, response.width, response.side, this.DEFAULT_LEFT, this.DEFAULT_TOP);
     };
+    //This method calculates poligon points by height and width
     Shape.prototype.getPolygonCoordinates = function (numberOfAngles, height, width, xCenter, yCenter) {
         var xyCords = [];
         for (var i = 1; i <= numberOfAngles; i += 1) {
@@ -625,6 +627,7 @@ var Shape = (function () {
         }
         return xyCords;
     };
+    //This method calculates poligon points by side length
     Shape.prototype.getPolygonCoordinatesBySideLength = function (numberOfAngles, side, xCenter, yCenter) {
         var xyCords = [];
         for (var i = 1; i <= numberOfAngles; i += 1) {
@@ -638,17 +641,20 @@ var Shape = (function () {
     return Shape;
 }());
 
-Shape.DEFAULT_OPACITY_CONST = 1;
-Shape.DEFAULT_FILL_COLOR = 'blue';
-Shape.DEFAULT_BORDER_COLOR = 'black';
-Shape.DEFAULT_TOP = 10;
-Shape.DEFAULT_LEFT = 10;
+Shape.DEFAULT_OPACITY_CONST = 1; //For now , shapes are not transperant, but transperancy can be added by changing default opacity.
+Shape.DEFAULT_FILL_COLOR = 'blue'; //default fill color for drawing shapes.
+Shape.DEFAULT_BORDER_COLOR = 'black'; //default border color around shapes.
+Shape.DEFAULT_TOP = 10; //default starting Top point for drawing shapes.
+Shape.DEFAULT_LEFT = 10; //default starting Left point for drawing shapes.
+//Oval shape is responsible for rendering oval/circle using target library, in this case Fabric JS.
 var Oval = (function (_super) {
     __extends(Oval, _super);
     function Oval() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    //following method returns a drawing object which is then painted on the canvas.
     Oval.prototype.getDrawingObject = function () {
+        //when height = width, Ellipse results into circle otherwise it results into oval.
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Ellipse({
             left: this.left,
             top: this.top,
@@ -660,11 +666,13 @@ var Oval = (function (_super) {
     return Oval;
 }(Shape));
 
+//Triangle shape is responsible for rendering shape using target library, in this case Fabric JS.
 var Triangle = (function (_super) {
     __extends(Triangle, _super);
     function Triangle() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    //following method returns a drawing object which is then painted on the canvas.
     Triangle.prototype.getDrawingObject = function () {
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Triangle({
             left: this.left,
@@ -677,12 +685,15 @@ var Triangle = (function (_super) {
     return Triangle;
 }(Shape));
 
+//Rectangle shape is responsible for rendering rectangle/square using target library, in this case Fabric JS.
 var Rectangle = (function (_super) {
     __extends(Rectangle, _super);
     function Rectangle() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    //following method returns a drawing object which is then painted on the canvas.
     Rectangle.prototype.getDrawingObject = function () {
+        //when height = width, fabric.Rect results into square otherwise it results into rectangle.
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Rect({
             left: this.left,
             top: this.top,
@@ -694,20 +705,23 @@ var Rectangle = (function (_super) {
     return Rectangle;
 }(Shape));
 
+//Parallelogram shape is responsible for rendering a polygon using target library, in this case Fabric JS.
 var Parallelogram = (function (_super) {
     __extends(Parallelogram, _super);
     function Parallelogram(height, width, left, top, fillColor) {
         if (fillColor === void 0) { fillColor = Shape.DEFAULT_FILL_COLOR; }
         return _super.call(this, height, width, left, top, fillColor) || this;
     }
+    //following method calculates all four points of a polygon which the lines are connected to.
     Parallelogram.prototype.getDrawingObject = function (side) {
         if (side === void 0) { side = null; }
         var xyCords = [
             { x: this.left, y: this.top },
             { x: this.left + this.width, y: this.top },
             { x: this.left + this.width - (this.width * 0.2), y: this.top + this.height },
-            { x: this.left - (this.width * 0.2), y: this.top + this.height }
+            { x: this.left - (this.width * 0.2), y: this.top + this.height } //move and create a point to draw line to bottom left position.
         ];
+        //draw the polygon with x and y co-ordinate points calculated above.
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Polygon(xyCords, {
             left: this.left,
             top: this.top,
@@ -718,6 +732,7 @@ var Parallelogram = (function (_super) {
     return Parallelogram;
 }(Shape));
 
+//Polygon shape is responsible for rendering a Pentagon or Hexagon or Heptagon or Octagon using target library, in this case Fabric JS.
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(numberOfAngles, height, width, side, left, top, fillColor) {
@@ -730,11 +745,14 @@ var Polygon = (function (_super) {
     Polygon.prototype.getDrawingObject = function () {
         var xyCords = [];
         if (this.side != null) {
+            //calculate x and y co-ordinates using length of all sides.
             xyCords = this.getPolygonCoordinatesBySideLength(this.numberOfAngles, this.side, this.left + this.width / 2, this.top + this.height / 2);
         }
         else {
+            //calculate x and y co-ordinates using height and width of polygon.
             xyCords = this.getPolygonCoordinates(this.numberOfAngles, this.height, this.width, this.left + this.width / 2, this.top + this.height / 2);
         }
+        //draw the polygon with x and y co-ordinate points calculated above.
         return new __WEBPACK_IMPORTED_MODULE_0_fabric__["fabric"].Polygon(xyCords, {
             left: 10,
             top: 10,
@@ -745,16 +763,6 @@ var Polygon = (function (_super) {
     return Polygon;
 }(Shape));
 
-var PolygonTypesWithAngles = (function () {
-    function PolygonTypesWithAngles() {
-    }
-    return PolygonTypesWithAngles;
-}());
-
-PolygonTypesWithAngles.Pentagon = 5;
-PolygonTypesWithAngles.Hexagon = 6;
-PolygonTypesWithAngles.Heptagon = 7;
-PolygonTypesWithAngles.Octagon = 8;
 var ShapeAttributes = (function () {
     function ShapeAttributes() {
     }
@@ -790,22 +798,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+//ShapesService is responsible for asynchronous parsing of all commands on the server and then returning the observable to wait for the response.
 var ShapesService = (function () {
     function ShapesService(http) {
         this.http = http;
         this.parsingCompletedObserver = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__["BehaviorSubject"](null);
     }
+    //Following method sends natural language command to server for parsing into shape attributes
+    //and once the response is returned fires an observable which the consumer of this service can use to process response.
     ShapesService.prototype.parse = function (command) {
         var _this = this;
         var options = { headers: { 'content-type': 'text/plain' } };
         this.http.post('api/ShapesParser/parse', command, options).subscribe(function (response) {
             var responseObj = response.json();
             if (responseObj.errorMessages == null || responseObj.errorMessages.length === 0) {
+                //if the response is valid then translate shape attributes into a Shape object, which can then be rendered by the consumer.
                 var result = __WEBPACK_IMPORTED_MODULE_2__shapes_model__["a" /* Shape */].parseResponse(responseObj.data);
-                _this.parsingCompletedObserver.next(new __WEBPACK_IMPORTED_MODULE_4__core_core_model__["a" /* Response */](result));
+                _this.parsingCompletedObserver.next(new __WEBPACK_IMPORTED_MODULE_4__core_core_model__["a" /* Response */](result)); //fire observable for further processing of shape object.
             }
             else {
-                _this.parsingCompletedObserver.next(responseObj);
+                _this.parsingCompletedObserver.next(responseObj); //fire observable for further processing of validation messages (like showing them on UI).
             }
         }, function (error) { return console.error(error); });
     };
@@ -818,24 +830,6 @@ ShapesService = __decorate([
 
 var _a;
 //# sourceMappingURL=shapes.service.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/not-found/not-found.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
 
 /***/ }),
 
@@ -858,24 +852,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
 var NotFoundComponent = (function () {
     function NotFoundComponent() {
     }
-    NotFoundComponent.prototype.ngOnInit = function () {
-    };
     return NotFoundComponent;
 }());
 NotFoundComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-not-found',
-        template: __webpack_require__("../../../../../src/app/not-found/not-found.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/not-found/not-found.component.css")]
-    }),
-    __metadata("design:paramtypes", [])
+        template: __webpack_require__("../../../../../src/app/not-found/not-found.component.html")
+    })
 ], NotFoundComponent);
 
 //# sourceMappingURL=not-found.component.js.map

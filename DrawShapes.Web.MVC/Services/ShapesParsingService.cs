@@ -6,6 +6,9 @@ using DrawShapes.Web.MVC.Services.Contracts;
 
 namespace DrawShapes.Web.MVC.Services
 {
+  /// <summary>
+  /// ShapesParsingService provides all parsing of a command using natural language.
+  /// </summary>
   public class ShapesParsingService : IShapesParsingService
   {
     public enum PolygonTypesWithAngles
@@ -30,6 +33,11 @@ namespace DrawShapes.Web.MVC.Services
       Parallelogram
     }
 
+    /// <summary>
+    /// This method validates the command and returns validation messages for invalid command items.
+    /// </summary>
+    /// <param name="command">This is a natural language command. Example: Draw a rectangle with a width of 250 and a height of 400</param>
+    /// <returns></returns>
     private string[] ValidateCommand(string command)
     {
       var errorMessages = new List<string>();
@@ -49,6 +57,11 @@ namespace DrawShapes.Web.MVC.Services
       return errorMessages.ToArray();
     }
 
+    /// <summary>
+    /// The main parse method, which does parsing to create any type of supported shape.
+    /// </summary>
+    /// <param name="command">This is a natural language command. Example: Draw a rectangle with a width of 250 and a height of 400</param>
+    /// <returns></returns>
     public Response<ShapeAttributes> Parse(string command)
     {
       var errorMessages = ValidateCommand(command);
@@ -64,59 +77,79 @@ namespace DrawShapes.Web.MVC.Services
 
       if (shapeType == SupportedShapesEnum.Circle.ToString() || shapeType == SupportedShapesEnum.Oval.ToString())
       {
+        //This statement parses and returns all attributes of a circle.
         return parseCircleOrOval(command, shapeType);
       }
       if (shapeType == SupportedShapesEnum.Square.ToString()
           || shapeType == SupportedShapesEnum.Rectangle.ToString()
           || shapeType == SupportedShapesEnum.Parallelogram.ToString())
       {
+        //This statement parses and returns all attributes like height and width of a square or rectangle or parellellogram.
         return parseSquareOrRectangleOrParallelogram(command, shapeType);
       }
 
       if (shapeType == SupportedShapesEnum.Triangle.ToString())
       {
+        //This statement parses and returns all attributes like height and width of a triangle.
         return parseTriangle(command, shapeType);
       }
 
+      //This statement parses and returns all attributes like sides of a polygon (pentagon or hexagon or heptagon or octagon).
       return parsePolygon(command, shapeType);
-      //return new Response<ShapeAttributes>(null, new string[] { "This shape has not been implemented yet." });
     }
 
-    public int? getValueFollowing(string command, string following)
+    /// <summary>
+    /// This method takes the command and searches for the keyword from "following" parameter and then returns the number found after that keyword.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="following">After which keyword, the number should be found.</param>
+    /// <returns></returns>
+    private int? getValueFollowing(string command, string following)
     {
-      int idx = command.IndexOf(following, StringComparison.CurrentCultureIgnoreCase);
+      int idx = command.IndexOf(following, StringComparison.CurrentCultureIgnoreCase);  //find the index of "following" keyword.
       if (idx <= 0) return null;
 
       int startPos = idx + following.Length;
       string digits = "";
 
       bool digitFound = false;
+      //search for number starting with the end index of "following" keyword.
       for (int i = startPos; i < command.Length; i++)
       {
         string characterAtIndex = command.Substring(i, 1);
         if (IsInteger(characterAtIndex))
         {
           digitFound = true;
-          digits = digits + characterAtIndex;
+          digits = digits + characterAtIndex; //append to digits
         }
         else
         {
-          if (digitFound) break;
+          if (digitFound) break;  //if the character is not a valid numeric digit then end the digit search.
         }
       }
 
       if (!IsInteger(digits)) return null;
 
-      return Convert.ToInt32(digits);
+      return Convert.ToInt32(digits); //convert all digits which are found together to integer.
     }
 
-
+    /// <summary>
+    /// Returns if the value is integer or not.
+    /// </summary>
+    /// <param name="val"></param>
+    /// <returns></returns>
     private bool IsInteger(string val)
     {
       int result;
       return int.TryParse(val, out result);
     }
 
+    /// <summary>
+    /// Following method parses the command to get the attributes of a circle/oval like radius or height or width.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="shapeType"></param>
+    /// <returns></returns>
     private Response<ShapeAttributes> parseCircleOrOval(string command, string shapeType)
     {
       int? parsedHeight = 0; int? parsedWidth = 0;
@@ -132,19 +165,19 @@ namespace DrawShapes.Web.MVC.Services
 
       if (radius > 0)
       {
-        parsedHeight = radius.Value * 2;
-        parsedWidth = radius.Value * 2;
+        parsedHeight = radius.Value * 2;  //calculate height = radius * 2
+        parsedWidth = radius.Value * 2;  //calculate width = radius * 2
       }
       else
       {
         if (height > 0)
         {
           parsedHeight = height;
-          parsedWidth = (shapeType == SupportedShapesEnum.Circle.ToString() ? height : width);
+          parsedWidth = (shapeType == SupportedShapesEnum.Circle.ToString() ? height : width); //height and width should be same if its a circle.
         }
         if (width > 0)
         {
-          parsedHeight = (shapeType == SupportedShapesEnum.Circle.ToString() ? width : height);
+          parsedHeight = (shapeType == SupportedShapesEnum.Circle.ToString() ? width : height); //height and width should be same if its a circle.
           parsedWidth = width;
         }
 
@@ -172,6 +205,12 @@ namespace DrawShapes.Web.MVC.Services
       });
     }
 
+    /// <summary>
+    /// Following method parses the command to get the attributes of a Square Or Rectangle Or Parallelogram like height and/or width.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="shapeType"></param>
+    /// <returns></returns>
     private Response<ShapeAttributes> parseSquareOrRectangleOrParallelogram(string command, string shapeType)
     {
       int? parsedHeight = 0; int? parsedWidth = 0;
@@ -226,7 +265,12 @@ namespace DrawShapes.Web.MVC.Services
       });
     }
 
-
+    /// <summary>
+    /// Following method parses the command to get the attributes of a Triangle like height and/or width.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="shapeType"></param>
+    /// <returns></returns>
     private Response<ShapeAttributes> parseTriangle(string command, string shapeType)
     {
       int? width = getValueFollowing(command, "width of");
@@ -248,6 +292,12 @@ namespace DrawShapes.Web.MVC.Services
       });
     }
 
+    /// <summary>
+    /// Following method parses the command to get the attributes of a polygon (pentagon or hexagon or heptagon or octagon) like length of all sides.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="shapeType"></param>
+    /// <returns></returns>
     private Response<ShapeAttributes> parsePolygon(string command, string shapeType)
     {
       int? sideLength = getValueFollowing(command, "side of");
