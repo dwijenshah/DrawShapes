@@ -7,10 +7,15 @@
       </li>
     </ul>
   </div>
-  <label for="commandText">Write Command to Draw Shape: </label>
+  <label for="commandText">
+    Write Command to Draw Shape:
+    <button class="btn btn-sm btn-info" [routerLink]="['/help']">
+      <i class="fa fa-question-circle right-margin"></i> How To
+    </button>
+  </label>
 
   <div id="input-container">
-    <input id="commandText" class="command-input" type="text" [(ngModel)]="model.command"/>
+    <input id="commandText" class="command-input" type="text" [(ngModel)]="model.command" />
     <button class="btn btn-sm btn-primary" (click)="draw()">
       <i class="fa fa-paint-brush right-margin"></i> Draw Shape
     </button>
